@@ -1,0 +1,40 @@
+package com.project.cdio.models;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.cdio.entities.RoleEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserDTO{
+
+    @JsonProperty("fullname")
+    private String fullName;
+
+    private String email;
+
+    @JsonProperty("phone_number")
+    @NotBlank(message = "Phone number is required")
+    private String phoneNumber;
+
+    @JsonProperty("password")
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    @JsonProperty("retype_password")
+    @NotBlank(message = "Retype password is required")
+    private String retypePassword;
+
+    @NotNull(message = "Role ID is required")
+    @JsonProperty("role_id")
+    private Long roleId;
+
+    @JsonProperty("facebook_account_id")
+    private int facebookAccountId;
+
+    @JsonProperty("google_account_id")
+    private int googleAccountId;
+
+}
