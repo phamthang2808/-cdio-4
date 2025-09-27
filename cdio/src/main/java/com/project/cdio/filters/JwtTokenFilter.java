@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -58,6 +60,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             final String phoneNumber = jwtTokenUtil.extractPhoneNumber(token);
 
             if (phoneNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                log.info("Auth header = {}", authHeader);
+                log.info("SecurityContext = {}", SecurityContextHolder.getContext().getAuthentication());
+
                 UserEntity userDetails = (UserEntity) userDetailsService.loadUserByUsername(phoneNumber);
                 if (jwtTokenUtil.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication =
@@ -87,11 +92,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         // Public endpoints
         if ("POST".equals(method) && uri.startsWith(base + "/users/register")) return true;
         if ("POST".equals(method) && uri.startsWith(base + "/users/login"))    return true;
-
+//        if ("GET".equals(method)  && uri.startsWith(base + "/rooms") )         return true;
+        if ("POST".equals(method)  && uri.startsWith(base + "/rooms") )         return true;  // role staff, admin phai k dc pass de lay token xac thuc dc role
+        if ("GET".equals(method)  && uri.startsWith("/uploads"))               return true; // ảnh public
         // Health, docs… (tuỳ bạn bật)
          if ("GET".equals(method) && uri.startsWith(base + "/healthcheck")) return true;
         if ("GET".equals(method) && uri.startsWith(base + "/test")) return true;
-
+        //vo danh la qua dc anonymous
         // CORS preflight & error forward
         if ("OPTIONS".equals(method)) return true;
         if ("/error".equals(uri))     return true;

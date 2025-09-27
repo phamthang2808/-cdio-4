@@ -3,37 +3,33 @@ package com.project.cdio.responses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.cdio.entities.RoleEntity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserResponse {
-    private Long id;
+public class UserResponse{
 
+    @JsonProperty("fullname")
+    private String fullName;
+
+//    @NotBlank(message = "Email is required")
     private String email;
 
-    //    @JsonProperty("phone_number")
-    @NotBlank(message = "Phone number is required")
-    private String phone;
+    @JsonProperty("phone_number")
+//    @NotBlank(message = "Phone number is required")
+    private String phoneNumber;
 
-    @JsonProperty("is_active")
-    private boolean active;
+//    @JsonProperty("password")
+//    @NotBlank(message = "Password is required")
+    private String password;
 
-    private RoleEntity role;
-//    public static UserResponse fromUser(UserEntity user){
-//        return UserResponse.builder()
-//                .id(user.getId())
-//                .fullName(user.getFullName())
-//                .phoneNumber(user.getPhoneNumber())
-//                .address(user.getAddress())
-//                .active(user.isActive())
-//                .dateOfBirth(user.getDateOfBirth())
-//                .facebookAccountId(user.getFacebookAccountId())
-//                .googleAccountId(user.getGoogleAccountId())
-//                .role(user.getRole())
-//                .build();
-//    }
+
+    private String img;
+
+
 }

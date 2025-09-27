@@ -36,6 +36,9 @@ public class UserEntity extends BaseEntity implements UserDetails  {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "img", nullable = false)
+    private String img;
+
     @Column(name = "is_active")
     private boolean active;
 
@@ -45,7 +48,10 @@ public class UserEntity extends BaseEntity implements UserDetails  {
     @Column(name = "google_account_id")
     private int googleAccountId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ManagementRoomEntity> managementRooms;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private RoleEntity role;
 
@@ -63,7 +69,7 @@ public class UserEntity extends BaseEntity implements UserDetails  {
 
     @Override
     public String getUsername() {
-        return email;
+        return phoneNumber;
     }
 
     @Override

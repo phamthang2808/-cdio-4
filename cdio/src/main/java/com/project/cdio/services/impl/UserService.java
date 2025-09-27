@@ -1,7 +1,8 @@
-package com.project.cdio.services;
+package com.project.cdio.services.impl;
 
 import com.project.cdio.components.LocalizationUtils;
 import com.project.cdio.convert.UserConvert;
+import com.project.cdio.entities.CustomerEntity;
 import com.project.cdio.entities.RoleEntity;
 import com.project.cdio.entities.UserEntity;
 import com.project.cdio.exceptions.PermissionDenyException;
@@ -9,11 +10,19 @@ import com.project.cdio.models.UserDTO;
 import com.project.cdio.repositories.UserRepository;
 import com.project.cdio.components.JwtTokenUtils;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.*;
 import com.project.cdio.repositories.RoleRepository;
+import com.project.cdio.request.StaffCreateRequest;
+import com.project.cdio.request.UserUpdateRequest;
+import com.project.cdio.responses.AllStaffResponse;
+import com.project.cdio.services.IUserService;
 import com.project.cdio.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.Role;
+import org.apache.catalina.User;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,22 +33,27 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final UserRepository userRepository;
+
     private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtTokenUtils jwtTokenUtil;
+
     private final AuthenticationManager authenticationManager;
+
     private final LocalizationUtils localizationUtils;
+
     private final UserConvert userConvert;
+
+
     @Override
     @Transactional
     public UserEntity createUser(UserDTO userDTO) throws Exception {
-
+         userDTO.setRoleId( userDTO.getRoleId() == null ? 1 : userDTO.getRoleId());
         String phoneNumber = userDTO.getPhoneNumber();
-
-
-
         if(userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataIntegrityViolationException("Phone number already exists");
         }
@@ -74,8 +88,8 @@ public class UserService implements IUserService{
     @Override
     public String login(
             String phoneNumber,
-            String password,
-            Long roleId
+            String password
+//            Long roleId
     ) throws Exception {
 
         Optional<UserEntity> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
@@ -92,6 +106,7 @@ public class UserService implements IUserService{
                 throw new BadCredentialsException(localizationUtils.getLocalizedMessage(MessageKeys.WRONG_PHONE_PASSWORD));
             }
         }
+        Long roleId = existingUser.getRole().getRoleId();
         Optional<RoleEntity> optionalRole = roleRepository.findById(roleId);
         if(optionalRole.isEmpty() || !roleId.equals(existingUser.getRole().getRoleId())) {
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.ROLE_DOES_NOT_EXISTS));
@@ -109,54 +124,68 @@ public class UserService implements IUserService{
         authenticationManager.authenticate(authenticationToken);
         return jwtTokenUtil.generateToken(existingUser);
     }
-//    @Transactional
-//    @Override
-//    public UserEntity updateUser(Long userId, UpdateUserDTO updatedUserDTO) throws Exception {
-//        // Find the existing user by userId
-//        User existingUser = userRepository.findById(userId)
-//                .orElseThrow(() -> new DataNotFoundException("User not found"));
-//
-//        // Check if the phone number is being changed and if it already exists for another user
-//        String newPhoneNumber = updatedUserDTO.getPhoneNumber();
-//        if (!existingUser.getPhoneNumber().equals(newPhoneNumber) &&
-//                userRepository.existsByPhoneNumber(newPhoneNumber)) {
-//            throw new DataIntegrityViolationException("Phone number already exists");
-//        }
-//
-//        // Update user information based on the DTO
-//        if (updatedUserDTO.getFullName() != null) {
-//            existingUser.setFullName(updatedUserDTO.getFullName());
-//        }
-//        if (newPhoneNumber != null) {
-//            existingUser.setPhoneNumber(newPhoneNumber);
-//        }
-//        if (updatedUserDTO.getAddress() != null) {
-//            existingUser.setAddress(updatedUserDTO.getAddress());
-//        }
-//        if (updatedUserDTO.getDateOfBirth() != null) {
-//            existingUser.setDateOfBirth(updatedUserDTO.getDateOfBirth());
-//        }
-//        if (updatedUserDTO.getFacebookAccountId() > 0) {
-//            existingUser.setFacebookAccountId(updatedUserDTO.getFacebookAccountId());
-//        }
-//        if (updatedUserDTO.getGoogleAccountId() > 0) {
-//            existingUser.setGoogleAccountId(updatedUserDTO.getGoogleAccountId());
-//        }
-//
-//        // Update the password if it is provided in the DTO
-//        if (updatedUserDTO.getPassword() != null
-//                && !updatedUserDTO.getPassword().isEmpty()) {
-//            if(!updatedUserDTO.getPassword().equals(updatedUserDTO.getRetypePassword())) {
-//                throw new DataNotFoundException("Password and retype password not the same");
-//            }
-//            String newPassword = updatedUserDTO.getPassword();
-//            String encodedPassword = passwordEncoder.encode(newPassword);
-//            existingUser.setPassword(encodedPassword);
-//        }
-//        //existingUser.setRole(updatedRole);
-//        // Save the updated user
-//        return userRepository.save(existingUser);
-//    }
+
+    @Override
+    @Transactional
+    public void updateUser(Long userId, UserUpdateRequest userDTO) throws DataNotFoundException {
+        // Find the existing user by userId
+        UserEntity existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        // Check if the phone number is being changed and if it already exists for another user
+        String newPhoneNumber = userDTO.getPhoneNumber();
+        if (!existingUser.getPhoneNumber().equals(newPhoneNumber) &&
+                userRepository.existsByPhoneNumber(newPhoneNumber)) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+
+        existingUser = userConvert.updateEntityFromDto(userDTO, existingUser,userId);
+
+        //existingUser.setRole(updatedRole);
+        // Save the updated user
+         userRepository.save(existingUser);
+    }
+
+    @Override
+    public Page<AllStaffResponse> getAllStaffs(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<UserEntity> data = userRepository.findByRole_RoleId(pageable,2);
+        return data.map( s -> new AllStaffResponse(
+                s.getUserId(), s.getFullName(),
+                s.getEmail(), s.getPhoneNumber(), s.getPassword(),
+                s.getImg()
+        ));
+    }
+
+    @Override
+    @Transactional
+    public UserEntity createStaff(StaffCreateRequest staffCreateRequest) {
+
+
+        if(userRepository.existsByPhoneNumber(staffCreateRequest.getPhoneNumber().trim())) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+
+        if (userRepository.existsByEmail(staffCreateRequest.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exists");
+        }
+
+        UserEntity newStaff = userConvert.convertToEntity(staffCreateRequest);
+        // Kiểm tra nếu có accountId, không yêu cầu password
+        if (staffCreateRequest.getFacebookAccountId() == 0 && staffCreateRequest.getGoogleAccountId() == 0) {
+            String password = staffCreateRequest.getPassword();
+            String encodedPassword = passwordEncoder.encode(password);
+            newStaff.setPassword(encodedPassword);
+        }
+
+        newStaff.setActive(true);
+//        RoleEntity role = new RoleEntity(); khong set thi cac truong kia bi  null
+        RoleEntity role = roleRepository.findByRoleId(2L);
+        newStaff.setRole(role);
+        return userRepository.save(newStaff);
+    }
+
+
 
     @Override
     public UserEntity getUserDetailsFromToken(String token) throws Exception {
@@ -171,6 +200,25 @@ public class UserService implements IUserService{
         } else {
             throw new Exception("User not found");
         }
+    }
+
+    @Override
+    public UserDTO getUserById(Long userId) throws DataNotFoundException {
+        Optional<UserEntity> optionaUser = userRepository.findByUserId(userId);
+        if(optionaUser.isEmpty()){
+            throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.FIND_USER_FAILED));
+        }
+        UserEntity existingUser = optionaUser.get();
+        RoleEntity role = existingUser.getRole();
+        UserDTO userDto = userConvert.convertToDto(existingUser);
+        userDto.setRoleName(role.getRoleName().toUpperCase());
+        return userDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
     }
 }
 

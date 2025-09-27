@@ -23,12 +23,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 //@EnableMethodSecurity
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebMvc
+//@EnableWebMvc
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
@@ -44,14 +45,43 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests
                             .requestMatchers(
-                                    String.format("%s/users/login", apiPrefix),    // "/api/v1/users/register", "/api/v1/users/login"
+                                    String.format("%s/users/login", apiPrefix),
                                     String.format("%s/users/register", apiPrefix)
                             )
                             .permitAll()
                             .requestMatchers(HttpMethod.GET,
                                     String.format("%s/roles**",apiPrefix)).permitAll()
+
+                            .requestMatchers(GET,String.format("%s/rooms/**", apiPrefix)).permitAll()
+                            .requestMatchers(POST,String.format("%s/rooms", apiPrefix)).permitAll()  // ......
+                            .requestMatchers(GET,String.format("%s/rooms/staff", apiPrefix)).permitAll()
+                            .requestMatchers(String.format("%s/users/**",apiPrefix)).permitAll()
+
+//                           permitAll = không cần đăng nhập, không cần token.
+//
+//                           authenticated = cần đăng nhập, cần token hợp lệ (role gì cũng được).
+//
+//                           hasRole("STAFF") = cần token hợp lệ + chứa role STAFF.
+
+                            .requestMatchers(String.format("%s/customers/**", apiPrefix)).permitAll()
+                            .requestMatchers(String.format("%s/customers/staff", apiPrefix)).hasRole("STAFF")
+
                             .requestMatchers(GET,
                                     String.format("%s/healthcheck/**", apiPrefix)).permitAll()
+                            .requestMatchers("/error", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
+                            .requestMatchers( "/uploads/**").permitAll()
+                            .requestMatchers( "/uploads/**", apiPrefix).permitAll()
+                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+
+//                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+//                            .requestMatchers(HttpMethod.POST, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+//                            .requestMatchers(HttpMethod.PUT, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+//                            .requestMatchers(HttpMethod.DELETE, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+
+//                            .requestMatchers(String.format("%s/users/**", apiPrefix)).hasRole("STAFF")
+
+                            // ====== ADMIN ======
+//                            .requestMatchers(String.format("%s/roles/**", apiPrefix)).hasRole("ADMIN")
 
                             .anyRequest().authenticated();
                 })

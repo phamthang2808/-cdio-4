@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "blog_posts")
 @Getter
 @Setter
 @AllArgsConstructor

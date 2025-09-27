@@ -3,8 +3,10 @@ package com.project.cdio.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "roles")
+@Table(name = "customers")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,7 +19,19 @@ public class CustomerEntity extends BaseEntity  {
     private Long customerId;
 
     private String name;
+
     private String email;
+
     private String phone;
-    private String comment;
+
+    private String note;
+
+    private String img;
+
+    private String address;
+
+    private Long active;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ManagementCustomerEntity> managementCustomer;
 }
