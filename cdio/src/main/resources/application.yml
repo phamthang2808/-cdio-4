@@ -54,3 +54,5 @@ logging:
 
 app:
   upload-dir: uploads
+
+#  "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe" -u root -p --databases hotel --routines --triggers --events --single-transaction --quick --set-gtid-purged=OFF --add-drop-table > sql\hotel.sql
