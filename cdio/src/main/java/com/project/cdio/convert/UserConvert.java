@@ -58,7 +58,6 @@ public class UserConvert {
         if(userDTO.getActive() != null){
             newUserEntity.setActive((userDTO.getActive()));
         }
-
         // Update the password if it is provided in the DTO
         if (userDTO.getPassword() != null
                 && !userDTO.getPassword().isEmpty()) {
@@ -66,6 +65,7 @@ public class UserConvert {
             String encodedPassword = passwordEncoder.encode(newPassword);
             newUserEntity.setPassword(encodedPassword);
         }
+        newUserEntity.setRole(userEntity.getRole());
         return newUserEntity;
     }
 

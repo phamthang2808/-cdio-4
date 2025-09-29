@@ -141,7 +141,6 @@ public class UserService implements IUserService {
 
         existingUser = userConvert.updateEntityFromDto(userDTO, existingUser,userId);
 
-        //existingUser.setRole(updatedRole);
         // Save the updated user
          userRepository.save(existingUser);
     }
