@@ -21,7 +21,7 @@ public class StaffResponse {
     @JsonProperty("errors")
     private List<String> errors;
 
-    @JsonProperty("customer")
+    @JsonProperty("staff")
     private UserEntity userEntity;
 
 }

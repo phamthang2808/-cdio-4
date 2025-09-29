@@ -21,10 +21,14 @@ public class UserUpdateRequest{
 
     private String phoneNumber;
 
-    @NotBlank(message = "Password is required")
+//    @NotBlank(message = "Password is required")
     private String password;
 
     private String img;
+
+    private Boolean active;
+
+    private RoleEntity role;
 
     private int facebookAccountId;
 

@@ -155,7 +155,7 @@ public class UserController {
 
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateStaff(
+    public ResponseEntity<?> updateUser(
             @PathVariable Long id ,
             @ModelAttribute UserUpdateRequest userDTO
     ) throws DataNotFoundException, IOException {

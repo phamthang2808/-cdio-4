@@ -39,7 +39,7 @@ import java.util.UUID;
 @RequestMapping("${api.prefix}/customers")
 @RequiredArgsConstructor
 public class CustomerController {
-ádfasdfasdefdsdffed
+
     private final LocalizationUtils localizationUtils;
     private final CustomerService customerService;
 

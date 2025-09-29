@@ -71,7 +71,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/error", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers( "/uploads/**").permitAll()
                             .requestMatchers( "/uploads/**", apiPrefix).permitAll()
-                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).permitAll()
 
 //                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(HttpMethod.POST, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
