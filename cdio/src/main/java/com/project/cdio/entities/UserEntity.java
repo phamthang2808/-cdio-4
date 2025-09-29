@@ -40,7 +40,7 @@ public class UserEntity extends BaseEntity implements UserDetails  {
     private String img;
 
     @Column(name = "is_active")
-    private boolean active;
+    private Boolean active;
 
     @Column(name = "facebook_account_id")
     private int facebookAccountId;

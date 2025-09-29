@@ -112,7 +112,7 @@ public class UserService implements IUserService {
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.ROLE_DOES_NOT_EXISTS));
         }
 //        if(!optionalUser.get().isActive()) {
-          if(!existingUser.isActive()){
+          if(!existingUser.getActive()){
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_IS_LOCKED));
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

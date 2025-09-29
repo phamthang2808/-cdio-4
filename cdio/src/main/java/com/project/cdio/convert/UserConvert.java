@@ -55,9 +55,10 @@ public class UserConvert {
             newUserEntity.setImg(userDTO.getImg());
         }
 
-        if(userDTO.getActive() != null){
-            newUserEntity.setActive((userDTO.getActive()));
-        }
+//        if(userDTO.getActive() != null){
+//            newUserEntity.setActive((userDTO.getActive()));
+//        }
+
         // Update the password if it is provided in the DTO
         if (userDTO.getPassword() != null
                 && !userDTO.getPassword().isEmpty()) {
@@ -65,6 +66,7 @@ public class UserConvert {
             String encodedPassword = passwordEncoder.encode(newPassword);
             newUserEntity.setPassword(encodedPassword);
         }
+        newUserEntity.setActive(userEntity.getActive());
         newUserEntity.setRole(userEntity.getRole());
         return newUserEntity;
     }
