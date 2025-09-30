@@ -73,15 +73,15 @@ public class CustomerService implements ICustomerService {
 
     @Override
     @Transactional
-    public CustomerEntity updateCustomerActive(long id,long active) {
+    public CustomerEntity updateCustomerActive(long id,boolean active) {
         Optional<CustomerEntity> optionalCustomer = customerRepository.findByCustomerId(id);
         CustomerEntity existingCustomer = optionalCustomer.get();
 //        CustomerEntity customer;
         if(existingCustomer != null){
 //            customer = customerConvert.convertToEntity(customerDTO);
-            if(active == 0){
+            if(active == false){
                 existingCustomer.setActive(0L);
-            }else if(active == 1){
+            }else if(active == true){
                 existingCustomer.setActive(1L);
             }
             return customerRepository.save(existingCustomer);

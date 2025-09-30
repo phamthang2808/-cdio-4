@@ -93,7 +93,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if ("POST".equals(method) && uri.startsWith(base + "/users/register")) return true;
         if ("POST".equals(method) && uri.startsWith(base + "/users/login"))    return true;
 //        if ("GET".equals(method)  && uri.startsWith(base + "/rooms") )         return true;
-        if ("POST".equals(method)  && uri.startsWith(base + "/rooms") )         return true;  // role staff, admin phai k dc pass de lay token xac thuc dc role
+//        if ("POST".equals(method)  && uri.startsWith(base + "/rooms") )         return true;  // role staff, admin phai k dc pass de lay token xac thuc dc role
         if ("GET".equals(method)  && uri.startsWith("/uploads"))               return true; // ảnh public
         // Health, docs… (tuỳ bạn bật)
          if ("GET".equals(method) && uri.startsWith(base + "/healthcheck")) return true;

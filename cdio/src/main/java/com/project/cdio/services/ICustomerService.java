@@ -14,6 +14,6 @@ public interface ICustomerService {
     List<CustomerDTO> getCustomersByStaff(Long staffId);
     CustomerDTO  getCustomerById(Long customerId) throws DataNotFoundException;
     CustomerEntity updateCustomer(long id, CustomerDTO customerDTO);
-    CustomerEntity updateCustomerActive(long id,long active);
+    CustomerEntity updateCustomerActive(long id,boolean active);
     void deleteCustomer(long id);
 }

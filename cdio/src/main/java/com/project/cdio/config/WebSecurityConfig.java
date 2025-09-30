@@ -62,9 +62,10 @@ public class WebSecurityConfig {
 //                           authenticated = cần đăng nhập, cần token hợp lệ (role gì cũng được).
 //
 //                           hasRole("STAFF") = cần token hợp lệ + chứa role STAFF.
-
+                            .requestMatchers(String.format("%s/admins/**", apiPrefix)).permitAll()
+                            .requestMatchers(String.format("%s/staff/**", apiPrefix)).permitAll()
                             .requestMatchers(String.format("%s/customers/**", apiPrefix)).permitAll()
-                            .requestMatchers(String.format("%s/customers/staff", apiPrefix)).hasRole("STAFF")
+
 
                             .requestMatchers(GET,
                                     String.format("%s/healthcheck/**", apiPrefix)).permitAll()
@@ -72,7 +73,7 @@ public class WebSecurityConfig {
                             .requestMatchers( "/uploads/**").permitAll()
                             .requestMatchers( "/uploads/**", apiPrefix).permitAll()
                             .requestMatchers(String.format("%s/rooms/**", apiPrefix)).permitAll()
-
+                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(HttpMethod.POST, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(HttpMethod.PUT, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
