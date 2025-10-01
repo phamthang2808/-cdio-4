@@ -1,6 +1,7 @@
 package com.project.cdio.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.cdio.entities.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,5 +29,13 @@ public class AllUserResponse {
 
 
     private String img;
+
+    public AllUserResponse(UserEntity user) {
+        this.userId = user.getUserId();
+        this.fullName = user.getFullName();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.img = user.getImg();
+    }
 
 }

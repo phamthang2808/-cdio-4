@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUserId(Long id);
     //SELECT * FROM users WHERE phoneNumber=?
     Page<UserEntity> findByRole_RoleId(Pageable pageable, int roleId);
-//    Page<UserEntity>
+    Page<UserEntity> findAllByRole_RoleId(Long roleId, Pageable pageable);
 }
 

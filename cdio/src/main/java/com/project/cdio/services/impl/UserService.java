@@ -224,16 +224,8 @@ public class UserService implements IUserService {
     @Override
     public Page<AllUserResponse> getAllUsers(int page, int limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserEntity> data = userRepository.findAll(pageable);
-
-//        return data.map(user -> new AllUserResponse(
-//                user.getUserId(),
-//                user.getFullName(),
-//                user.getEmail(),
-//                user.getPhoneNumber(),
-//                user.getImg()
-//        ));
-        return null;
+        Page<UserEntity> data = userRepository.findAllByRole_RoleId(1L,pageable);
+        return data.map(AllUserResponse::new);
     }
 }
 
