@@ -10,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AllUserResponse {
 
+    private Long userId;
+
 //    @JsonProperty("fullname")
     private String fullName;
 

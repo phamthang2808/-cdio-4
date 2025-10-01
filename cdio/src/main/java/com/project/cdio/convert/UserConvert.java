@@ -73,8 +73,8 @@ public class UserConvert {
         return newUserEntity;
     }
 
-    Page<AllUserResponse> convertEntitytoDto(Page<UserEntity> userEntityPage){
-        Page<AllUserResponse> data = modelMapper.map(userEntityPage, Page<AllUserResponse>.class);
-    }
+//    Page<AllUserResponse> convertEntitytoDto(Page<UserEntity> userEntityPage){
+//        Page<AllUserResponse> data = modelMapper.map(userEntityPage, Page<AllUserResponse>.class);
+//    }
 
 }

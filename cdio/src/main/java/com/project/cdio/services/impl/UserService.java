@@ -226,6 +226,13 @@ public class UserService implements IUserService {
         Pageable pageable = PageRequest.of(page, limit);
         Page<UserEntity> data = userRepository.findAll(pageable);
 
+//        return data.map(user -> new AllUserResponse(
+//                user.getUserId(),
+//                user.getFullName(),
+//                user.getEmail(),
+//                user.getPhoneNumber(),
+//                user.getImg()
+//        ));
         return null;
     }
 }
