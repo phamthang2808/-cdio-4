@@ -7,9 +7,11 @@ import com.project.cdio.models.CustomerDTO;
 import com.project.cdio.models.UserDTO;
 import com.project.cdio.request.StaffCreateRequest;
 import com.project.cdio.request.UserUpdateRequest;
+import com.project.cdio.responses.AllUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -69,6 +71,10 @@ public class UserConvert {
         newUserEntity.setActive(userEntity.getActive());
         newUserEntity.setRole(userEntity.getRole());
         return newUserEntity;
+    }
+
+    Page<AllUserResponse> convertEntitytoDto(Page<UserEntity> userEntityPage){
+        Page<AllUserResponse> data = modelMapper.map(userEntityPage, Page<AllUserResponse>.class);
     }
 
 }

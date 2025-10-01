@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class RoomDetailResponse {
 
-    private Long roomId;
+//    private Long roomId;
 
     private String name;
 
@@ -35,16 +35,18 @@ public class RoomDetailResponse {
 
     private String message;
 
-//    private Boolean airConditioning;
-//
-//    private Boolean wifi;
-//
-//    private Boolean hairDryer;
-//
-//    private Boolean petsAllowed;
-//
-//    private Boolean nonSmoking;
+    private String image;
 
-    private List<MultipartFile> files;
+    private Boolean airConditioning;
+
+    private Boolean wifi;
+
+    private Boolean hairDryer;
+
+    private Boolean petsAllowed;
+
+    private Boolean nonSmoking;
+
+//    private List<MultipartFile> files;
 
 }

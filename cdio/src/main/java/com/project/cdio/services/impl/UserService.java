@@ -14,6 +14,7 @@ import com.project.cdio.repositories.RoleRepository;
 import com.project.cdio.request.StaffCreateRequest;
 import com.project.cdio.request.UserUpdateRequest;
 import com.project.cdio.responses.AllStaffResponse;
+import com.project.cdio.responses.AllUserResponse;
 import com.project.cdio.services.IUserService;
 import com.project.cdio.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
@@ -218,6 +219,14 @@ public class UserService implements IUserService {
     @Transactional
     public void deleteUser(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<AllUserResponse> getAllUsers(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<UserEntity> data = userRepository.findAll(pageable);
+
+        return null;
     }
 }
 

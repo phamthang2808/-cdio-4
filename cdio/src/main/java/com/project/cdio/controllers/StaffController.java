@@ -6,6 +6,7 @@ import com.project.cdio.entities.UserEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
 import com.project.cdio.models.CustomerDTO;
 import com.project.cdio.models.RoomDTO;
+import com.project.cdio.responses.AllUserResponse;
 import com.project.cdio.responses.RoomResponse;
 import com.project.cdio.responses.UpdateCustomerResponse;
 import com.project.cdio.responses.UpdateRoomResponse;
@@ -15,6 +16,9 @@ import com.project.cdio.services.impl.UserService;
 import com.project.cdio.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -253,5 +257,15 @@ public class StaffController {
     ){
         userService.deleteUser(id);
         return ResponseEntity.ok("delete sucessfully");
+    }
+
+    @GetMapping("/users/all-users")
+    public ResponseEntity<?> getAllUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int limit
+    ){
+        Page<AllUserResponse> listUsers = userService.getAllUsers(page,limit);
+
+        return ResponseEntity.ok(listUsers);
     }
 }
