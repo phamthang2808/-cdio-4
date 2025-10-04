@@ -52,28 +52,27 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.GET,
                                     String.format("%s/roles**",apiPrefix)).permitAll()
 
-                            .requestMatchers(GET,String.format("%s/rooms/**", apiPrefix)).permitAll()
-                            .requestMatchers(POST,String.format("%s/rooms", apiPrefix)).permitAll()  // ......
-                            .requestMatchers(GET,String.format("%s/rooms/staff", apiPrefix)).permitAll()
-                            .requestMatchers(String.format("%s/users/**",apiPrefix)).permitAll()
+
 
 //                           permitAll = không cần đăng nhập, không cần token.
 //
 //                           authenticated = cần đăng nhập, cần token hợp lệ (role gì cũng được).
 //
 //                           hasRole("STAFF") = cần token hợp lệ + chứa role STAFF.
+                            
                             .requestMatchers(String.format("%s/admins/**", apiPrefix)).permitAll()
                             .requestMatchers(String.format("%s/staff/**", apiPrefix)).permitAll()
                             .requestMatchers(String.format("%s/customers/**", apiPrefix)).permitAll()
-
+                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).permitAll()
+                            .requestMatchers(String.format("%s/users/**",apiPrefix)).permitAll()
+                            .requestMatchers(String.format("%s/bookings/**",apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
                                     String.format("%s/healthcheck/**", apiPrefix)).permitAll()
                             .requestMatchers("/error", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers( "/uploads/**").permitAll()
                             .requestMatchers( "/uploads/**", apiPrefix).permitAll()
-                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).permitAll()
-                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
+
 //                            .requestMatchers(String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(HttpMethod.POST, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")
 //                            .requestMatchers(HttpMethod.PUT, String.format("%s/rooms/**", apiPrefix)).hasRole("STAFF")

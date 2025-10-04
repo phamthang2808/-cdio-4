@@ -23,5 +23,6 @@ public class ReviewEntity extends BaseEntity  {
     private RoomEntity room;
 
     private Integer rating;
+    
     private String comment;
 }

@@ -2,10 +2,10 @@ package com.project.cdio.services;
 
 import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.RoomAllDTO;
-import com.project.cdio.models.RoomDTO;
-import com.project.cdio.request.RoomSearchRequest;
-import com.project.cdio.responses.RoomDetailResponse;
+import com.project.cdio.models.dto.RoomAllDTO;
+import com.project.cdio.models.dto.RoomDTO;
+import com.project.cdio.models.request.RoomSearchRequest;
+import com.project.cdio.models.responses.RoomDetailResponse;
 import org.springframework.data.domain.Page;
 
 

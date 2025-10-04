@@ -2,9 +2,9 @@ package com.project.cdio.controllers;
 
 import com.project.cdio.components.LocalizationUtils;
 import com.project.cdio.entities.UserEntity;
-import com.project.cdio.request.StaffCreateRequest;
-import com.project.cdio.responses.AllStaffResponse;
-import com.project.cdio.responses.StaffResponse;
+import com.project.cdio.models.request.StaffCreateRequest;
+import com.project.cdio.models.responses.AllStaffResponse;
+import com.project.cdio.models.responses.StaffResponse;
 import com.project.cdio.services.impl.UserService;
 import com.project.cdio.utils.MessageKeys;
 import jakarta.validation.Valid;

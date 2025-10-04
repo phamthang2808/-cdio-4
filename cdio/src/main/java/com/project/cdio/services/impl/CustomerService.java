@@ -4,7 +4,7 @@ import com.project.cdio.components.LocalizationUtils;
 import com.project.cdio.convert.CustomerConvert;
 import com.project.cdio.entities.CustomerEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.CustomerDTO;
+import com.project.cdio.models.dto.CustomerDTO;
 import com.project.cdio.repositories.CustomerRepository;
 import com.project.cdio.repositories.ManagementCustomerRepository;
 import com.project.cdio.services.ICustomerService;

@@ -2,11 +2,11 @@ package com.project.cdio.services;
 
 import com.project.cdio.entities.UserEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.UserDTO;
-import com.project.cdio.request.StaffCreateRequest;
-import com.project.cdio.request.UserUpdateRequest;
-import com.project.cdio.responses.AllStaffResponse;
-import com.project.cdio.responses.AllUserResponse;
+import com.project.cdio.models.dto.UserDTO;
+import com.project.cdio.models.request.StaffCreateRequest;
+import com.project.cdio.models.request.UserUpdateRequest;
+import com.project.cdio.models.responses.AllStaffResponse;
+import com.project.cdio.models.responses.AllUserResponse;
 import org.springframework.data.domain.Page;
 
 public interface IUserService {

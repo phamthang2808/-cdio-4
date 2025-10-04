@@ -1,10 +1,8 @@
 package com.project.cdio.services;
 
 import com.project.cdio.entities.CustomerEntity;
-import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.CustomerDTO;
-import com.project.cdio.models.RoomDTO;
+import com.project.cdio.models.dto.CustomerDTO;
 
 import java.util.List;
 

@@ -1,17 +1,12 @@
 package com.project.cdio.convert;
 
-import com.project.cdio.entities.CustomerEntity;
 import com.project.cdio.entities.UserEntity;
-import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.CustomerDTO;
-import com.project.cdio.models.UserDTO;
-import com.project.cdio.request.StaffCreateRequest;
-import com.project.cdio.request.UserUpdateRequest;
-import com.project.cdio.responses.AllUserResponse;
+import com.project.cdio.models.dto.UserDTO;
+import com.project.cdio.models.request.StaffCreateRequest;
+import com.project.cdio.models.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

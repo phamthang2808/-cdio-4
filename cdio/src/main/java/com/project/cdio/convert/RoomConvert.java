@@ -1,13 +1,10 @@
 package com.project.cdio.convert;
 
-import com.project.cdio.entities.CustomerEntity;
 import com.project.cdio.entities.RoomEntity;
-import com.project.cdio.models.CustomerDTO;
-import com.project.cdio.models.RoomDTO;
-import com.project.cdio.responses.RoomDetailResponse;
+import com.project.cdio.models.dto.RoomDTO;
+import com.project.cdio.models.responses.RoomDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

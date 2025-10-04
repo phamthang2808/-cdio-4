@@ -1,16 +1,15 @@
 package com.project.cdio.services.impl;
 
-import ch.qos.logback.core.util.Loader;
 import com.project.cdio.components.LocalizationUtils;
 import com.project.cdio.convert.RoomConvert;
 import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.RoomAllDTO;
-import com.project.cdio.models.RoomDTO;
+import com.project.cdio.models.dto.RoomAllDTO;
+import com.project.cdio.models.dto.RoomDTO;
 import com.project.cdio.repositories.ManagementRoomRepository;
 import com.project.cdio.repositories.RoomRepository;
-import com.project.cdio.request.RoomSearchRequest;
-import com.project.cdio.responses.RoomDetailResponse;
+import com.project.cdio.models.request.RoomSearchRequest;
+import com.project.cdio.models.responses.RoomDetailResponse;
 import com.project.cdio.services.IRoomService;
 import com.project.cdio.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;

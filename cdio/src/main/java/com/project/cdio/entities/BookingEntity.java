@@ -3,6 +3,8 @@ package com.project.cdio.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "bookings")
 @Getter
@@ -22,7 +24,7 @@ public class BookingEntity extends BaseEntity  {
     @ManyToOne @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;
 
-    private java.time.LocalDate checkinDate;
-    private java.time.LocalDate checkoutDate;
+    private LocalDate checkinDate;
+    private LocalDate checkoutDate;
     private String status;
 }
