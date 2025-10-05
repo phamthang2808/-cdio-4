@@ -1,16 +1,16 @@
 package com.project.cdio.controllers;
 
 import com.project.cdio.components.LocalizationUtils;
+import com.project.cdio.entities.ReviewEntity;
 import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.entities.UserEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
 import com.project.cdio.models.dto.CustomerDTO;
 import com.project.cdio.models.dto.RoomDTO;
-import com.project.cdio.models.responses.AllUserResponse;
-import com.project.cdio.models.responses.RoomResponse;
-import com.project.cdio.models.responses.UpdateCustomerResponse;
-import com.project.cdio.models.responses.UpdateRoomResponse;
+import com.project.cdio.models.request.ReviewRequest;
+import com.project.cdio.models.responses.*;
 import com.project.cdio.services.impl.CustomerService;
+import com.project.cdio.services.impl.ReviewService;
 import com.project.cdio.services.impl.RoomService;
 import com.project.cdio.services.impl.UserService;
 import com.project.cdio.utils.MessageKeys;
@@ -46,7 +46,10 @@ public class StaffController {
     private final UserService userService;
     private final LocalizationUtils localizationUtils;
     private final RoomService roomService;
+    private final ReviewService reviewService;
 
+
+//==================================CUSTOMER========================================
 
 
     @GetMapping("/customers")
@@ -62,9 +65,9 @@ public class StaffController {
     public ResponseEntity<UpdateCustomerResponse> updateCustomerActive(
             @PathVariable Long id,
             @Valid @RequestParam("active") boolean active
-    ){
+    ) {
         UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse();
-        customerService.updateCustomerActive(id,active);
+        customerService.updateCustomerActive(id, active);
         updateCustomerResponse.setMessage("update customer active successfully");
         return ResponseEntity.ok(updateCustomerResponse);
     }
@@ -76,8 +79,8 @@ public class StaffController {
         try {
             CustomerDTO existingCustomer = customerService.getCustomerById(customerId);
             return ResponseEntity.ok(existingCustomer);
-        }catch (DataNotFoundException ex){
-            return ResponseEntity.badRequest().body("Not find customer with id = "+ customerId);
+        } catch (DataNotFoundException ex) {
+            return ResponseEntity.badRequest().body("Not find customer with id = " + customerId);
         }
 
     }
@@ -90,17 +93,17 @@ public class StaffController {
     ) throws IOException {
         List<MultipartFile> files = customerDTO.getFiles();
         files = files == null ? new ArrayList<MultipartFile>() : files;
-        for (MultipartFile file : files){
-            if(file.getSize() == 0){
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
                 continue;
             }
             // Kiểm tra kích thước file và định dạng
-            if(file.getSize() > 10 * 1024 * 1024){
+            if (file.getSize() > 10 * 1024 * 1024) {
                 return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
                         .body("file is too large! Maximum size is 10MB");
             }
             String contenType = file.getContentType();
-            if(contenType == null || !contenType.startsWith("image/")){
+            if (contenType == null || !contenType.startsWith("image/")) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                         .body("File must be an image");
             }
@@ -112,7 +115,7 @@ public class StaffController {
             //lưu vào bảng room_images
         }
         UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse();
-        customerService.updateCustomer( id, customerDTO);
+        customerService.updateCustomer(id, customerDTO);
         updateCustomerResponse.setMessage("update customer successfully");
         return ResponseEntity.ok(updateCustomerResponse);
     }
@@ -121,7 +124,7 @@ public class StaffController {
     @DeleteMapping("/customers/{id}")
     public ResponseEntity<String> deleteCustomer(
             @PathVariable Long id
-    ){
+    ) {
         customerService.deleteCustomer(id);
         return ResponseEntity.ok("delete sucessfully");
     }
@@ -144,6 +147,8 @@ public class StaffController {
     }
 
 
+//==================================ROOM========================================
+
 
     @PostMapping(value = "/rooms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createRoom(
@@ -152,7 +157,7 @@ public class StaffController {
 
     ) throws IOException {
         RoomResponse roomResponse = new RoomResponse();
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
                     .map(FieldError::getDefaultMessage)
@@ -163,17 +168,17 @@ public class StaffController {
         }
         List<MultipartFile> files = roomDTO.getFiles();
         files = files == null ? new ArrayList<MultipartFile>() : files;
-        for (MultipartFile file : files){
-            if(file.getSize() == 0){
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
                 continue;
             }
             // Kiểm tra kích thước file và định dạng
-            if(file.getSize() > 10 * 1024 * 1024){
+            if (file.getSize() > 10 * 1024 * 1024) {
                 return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
                         .body("file is too large! Maximum size is 10MB");
             }
             String contenType = file.getContentType();
-            if(contenType == null || !contenType.startsWith("image/")){
+            if (contenType == null || !contenType.startsWith("image/")) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                         .body("File must be an image");
             }
@@ -200,7 +205,6 @@ public class StaffController {
     }
 
 
-
     @PutMapping(value = "/rooms/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateRoom(
             @PathVariable Long id,
@@ -208,17 +212,17 @@ public class StaffController {
     ) throws IOException {
         List<MultipartFile> files = roomDTO.getFiles();
         files = files == null ? new ArrayList<MultipartFile>() : files;
-        for (MultipartFile file : files){
-            if(file.getSize() == 0){
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
                 continue;
             }
             // Kiểm tra kích thước file và định dạng
-            if(file.getSize() > 10 * 1024 * 1024){
+            if (file.getSize() > 10 * 1024 * 1024) {
                 return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
                         .body("file is too large! Maximum size is 10MB");
             }
             String contenType = file.getContentType();
-            if(contenType == null || !contenType.startsWith("image/")){
+            if (contenType == null || !contenType.startsWith("image/")) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                         .body("File must be an image");
             }
@@ -235,7 +239,7 @@ public class StaffController {
             //lưu vào bảng room_images
         }
         UpdateRoomResponse updateRoomResponse = new UpdateRoomResponse();
-        roomService.updateRoom( id, roomDTO);
+        roomService.updateRoom(id, roomDTO);
 //        updateRoomResponse.setMessage("update room successfully");
 //        return ResponseEntity.ok(updateRoomResponse);
         return ResponseEntity.ok("update room successfully");
@@ -244,26 +248,47 @@ public class StaffController {
     @DeleteMapping("/rooms/{id}")
     public ResponseEntity<String> deleteRoom(
             @PathVariable Long id
-    ){
+    ) {
         roomService.deleteRoom(id);
         return ResponseEntity.ok("delete sucessfully");
     }
 
+
+    //==================================USER========================================
+
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(
             @PathVariable Long id
-    ){
+    ) {
         userService.deleteUser(id);
         return ResponseEntity.ok("delete sucessfully");
     }
 
     @GetMapping("/users/all-users")
     public ResponseEntity<?> getAllUsers(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int limit
-    ){
-        Page<AllUserResponse> listUsers = userService.getAllUsers(page,limit);
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        Page<AllUserResponse> listUsers = userService.getAllUsers(page, limit);
 
         return ResponseEntity.ok(listUsers);
     }
+
+
+    //==================================REVIEW========================================
+
+    @GetMapping("/reviews/all-reviews")
+    public ResponseEntity<?> getAllReview(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        Page<AllReviewResponse> listReviews = reviewService.getAllReviews(page, limit);
+
+        return ResponseEntity.ok(listReviews);
+    }
+
+
+
+
 }

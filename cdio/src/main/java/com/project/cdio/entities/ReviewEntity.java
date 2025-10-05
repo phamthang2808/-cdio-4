@@ -3,6 +3,8 @@ package com.project.cdio.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "reviews")
 @Getter
@@ -22,7 +24,10 @@ public class ReviewEntity extends BaseEntity  {
     @ManyToOne @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;
 
-    private Integer rating;
+    @OneToMany(mappedBy = "review") //map toi doi tuong
+    private List<ReviewReplyEntity> reviewReply;
+
+    private Long rating;
     
     private String comment;
 }
