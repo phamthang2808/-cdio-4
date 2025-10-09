@@ -60,6 +60,7 @@ public class RoomEntity extends BaseEntity  {
 
     private Boolean wifi;
 
+
     @Column(name = "hair_dryer")
     private Boolean hairDryer;
 
@@ -71,5 +72,9 @@ public class RoomEntity extends BaseEntity  {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManagementRoomEntity> managementRooms;
+
+    @OneToOne
+    @JoinColumn(name = "type_id")
+    private RoomTypeEntity roomType;
 
 }

@@ -1,11 +1,9 @@
 package com.project.cdio.models.responses;
 
 import com.project.cdio.entities.ReviewEntity;
-import com.project.cdio.entities.ReviewReplyEntity;
-import com.project.cdio.entities.UserEntity;
+import com.project.cdio.entities.ReplyEntity;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 
@@ -33,9 +31,9 @@ public class AllReviewResponse {
          this.comment = r.getComment();
          this.createdAt = r.getCreatedAt();
          this.content = r.getReviewReply().stream()
-                 .sorted(Comparator.comparing(ReviewReplyEntity::getCreatedAt)) // tăng dần
+                 .sorted(Comparator.comparing(ReplyEntity::getCreatedAt)) // tăng dần
                  .reduce((a, b) -> b) // lay cuoi cung
-                 .map(ReviewReplyEntity::getContent)
+                 .map(ReplyEntity::getContent)
                  .orElse("(Chưa phản hồi)");
     }
 }

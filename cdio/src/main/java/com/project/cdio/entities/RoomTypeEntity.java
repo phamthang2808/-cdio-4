@@ -21,7 +21,5 @@ public class RoomTypeEntity extends BaseEntity  {
 
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private RoomEntity room;
+
 }

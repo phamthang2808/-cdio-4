@@ -2,15 +2,20 @@ package com.project.cdio.controllers;
 
 import com.project.cdio.entities.ReviewEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
+import com.project.cdio.models.dto.ReviewDTO;
 import com.project.cdio.models.request.ReviewRequest;
 import com.project.cdio.models.responses.AllReviewResponse;
 import com.project.cdio.models.responses.AllUserResponse;
 import com.project.cdio.models.responses.ReviewResponse;
 import com.project.cdio.services.impl.ReviewService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/reviews")
@@ -31,6 +36,19 @@ public class ReviewController {
         return ResponseEntity.ok(reviewResponse);
     }
 
+
+    @GetMapping("/{roomId}")
+    public ResponseEntity<?> getReviewById(
+            @PathVariable Long roomId
+    ) throws DataNotFoundException{
+        try {
+            List<ReviewDTO> reviewDTOs = new ArrayList<>();
+            reviewDTOs = reviewService.getReviewById(roomId);
+            return ResponseEntity.ok(reviewDTOs);
+        }catch (DataNotFoundException e){
+            return ResponseEntity.badRequest().body("Not find room with id = "+ roomId);
+        }
+    }
 
 
 }

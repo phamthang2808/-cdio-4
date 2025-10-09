@@ -6,6 +6,7 @@ import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
 import com.project.cdio.models.dto.RoomAllDTO;
 import com.project.cdio.models.dto.RoomDTO;
+import com.project.cdio.models.responses.ManagePriceResponse;
 import com.project.cdio.repositories.ManagementRoomRepository;
 import com.project.cdio.repositories.RoomRepository;
 import com.project.cdio.models.request.RoomSearchRequest;
@@ -48,6 +49,17 @@ public class RoomService implements IRoomService {
         ));
     }
 
+    @Override
+    public Page<ManagePriceResponse> getAllPriceRooms(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit/*, Sort.by("roomId").desc()*/);
+        Page<RoomEntity> data = roomRepository.findAll(pageable);
+        return data.map(r -> new ManagePriceResponse(
+                r.getRoomId(),r.getName(),
+                r.getDescription(), r.getTitle(),
+                r.getPrice(), r.getOldPrice(), r.getDiscount(),
+                r.getRoomType().getTypeName()
+        ));
+    }
 
 
     @Override

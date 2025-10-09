@@ -25,7 +25,7 @@ public class ReviewEntity extends BaseEntity  {
     private RoomEntity room;
 
     @OneToMany(mappedBy = "review") //map toi doi tuong
-    private List<ReviewReplyEntity> reviewReply;
+    private List<ReplyEntity> reviewReply;
 
     private Long rating;
     

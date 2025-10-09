@@ -1,21 +1,18 @@
 package com.project.cdio.controllers;
 
 import com.project.cdio.components.LocalizationUtils;
-import com.project.cdio.entities.ReviewEntity;
+import com.project.cdio.entities.ReplyEntity;
 import com.project.cdio.entities.RoomEntity;
 import com.project.cdio.entities.UserEntity;
 import com.project.cdio.exceptions.DataNotFoundException;
-import com.project.cdio.models.dto.CustomerDTO;
-import com.project.cdio.models.dto.RoomDTO;
-import com.project.cdio.models.request.ReviewRequest;
+import com.project.cdio.models.dto.*;
 import com.project.cdio.models.responses.*;
-import com.project.cdio.services.impl.CustomerService;
-import com.project.cdio.services.impl.ReviewService;
-import com.project.cdio.services.impl.RoomService;
-import com.project.cdio.services.impl.UserService;
+import com.project.cdio.services.impl.*;
 import com.project.cdio.utils.MessageKeys;
 import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +44,8 @@ public class StaffController {
     private final LocalizationUtils localizationUtils;
     private final RoomService roomService;
     private final ReviewService reviewService;
+    private final ReplyService replyService;
+    private final RoomTypeService roomTypeService;
 
 
 //==================================CUSTOMER========================================
@@ -289,6 +288,54 @@ public class StaffController {
     }
 
 
+    //==================================REPLY========================================
 
 
+    @PostMapping("/reply/{reviewId}")
+    public  ResponseEntity<?> createReply(
+            @PathVariable Long reviewId,
+            @RequestBody ReplyDTO replyDTO,
+            Authentication authentication
+            )throws DataNotFoundException{
+
+        try {
+            UserEntity user = (UserEntity) authentication.getPrincipal();
+            Long staffId = user.getUserId();
+            replyDTO.setReviewId(reviewId);
+            replyDTO.setStaffId(staffId);
+            ReplyEntity replyEntity = replyService.createReply(replyDTO);
+            ReplyResponse replyResponse = new ReplyResponse();
+            replyResponse.setMessage("create riview reply successfully");
+            return ResponseEntity.ok(replyResponse);
+        }catch(DataNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("failded");
+        }
+    }
+
+    //==================================RoomType========================================
+
+    @PostMapping("/roomtype")
+    public ResponseEntity<RoomTypeDTO> createRoomType(
+            @RequestBody RoomTypeDTO roomTypeDTO
+            ){
+        return ResponseEntity.ok().body(roomTypeService.createRoomType(roomTypeDTO));
+    }
+
+    //==================================Price========================================
+    @GetMapping("/price")
+    public ResponseEntity<List<ManagePriceResponse>> getAllRooms(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        Page<ManagePriceResponse> p = roomService.getAllPriceRooms(page, limit);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(p.getTotalElements()))
+                .header("X-Total-Pages", String.valueOf(p.getTotalPages()))
+                .header("X-Page", String.valueOf(page))
+                .header("X-Size", String.valueOf(limit))
+                .body(p.getContent());              // chỉ trả danh sách
+    }
 }

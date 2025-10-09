@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
@@ -17,6 +18,8 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
         ORDER BY r.roomId ASC
     """)
     Page<RoomEntity> searchRooms(Integer guests, Double minPrice, Double maxPrice, Pageable pageable);
+    Optional<List<RoomEntity>> findAllByRoomId(Long roomId);
     Optional<RoomEntity> findByRoomId(Long roomId);
+
 
 }

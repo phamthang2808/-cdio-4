@@ -13,6 +13,5 @@ public class RoomTypeDTO {
 
     private String description;
 
-    private Integer roomId;
 
 }
