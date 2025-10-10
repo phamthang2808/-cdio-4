@@ -8,6 +8,7 @@ import com.project.cdio.models.dto.UserLoginDTO;
 import com.project.cdio.models.request.UserUpdateRequest;
 import com.project.cdio.models.responses.LoginResponse;
 import com.project.cdio.models.responses.RegisterResponse;
+import com.project.cdio.models.responses.UserResponse;
 import com.project.cdio.services.impl.UserService;
 import com.project.cdio.utils.MessageKeys;
 import jakarta.validation.Valid;
@@ -172,6 +173,18 @@ public class UserController {
     }
 
 
+    @PostMapping("/details")
+    public ResponseEntity<UserResponse> getUserDetails(
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        try {
+            String extractedToken = authorizationHeader.substring(7); // Loại bỏ "Bearer " từ chuỗi token
+            UserEntity user = userService.getUserDetailsFromToken(extractedToken);
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 
 }
