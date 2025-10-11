@@ -24,13 +24,13 @@ public class UserEntity extends BaseEntity implements UserDetails  {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name="full_name", nullable = false, unique = true)
+    @Column(name="full_name", nullable = false)
     private String fullName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "phone", nullable = false, unique = true)
+    @Column(name = "phone", nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -50,6 +50,9 @@ public class UserEntity extends BaseEntity implements UserDetails  {
 
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManagementRoomEntity> managementRooms;
+
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReplyEntity> reply;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
